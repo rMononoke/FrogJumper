@@ -1,7 +1,9 @@
 {
-    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    //"terminal.integrated.defaultProfile.windows": "Git Bash",
     "git.enableSmartCommit": true,
     "git.confirmSync": false,
     "git.autofetch": true,
-    "git.postCommitCommand": "sync"
+    "git.postCommitCommand": "sync",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }
