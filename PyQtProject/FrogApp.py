@@ -9,8 +9,8 @@ class EngineFrog(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FrogApp")
-        self.setMinimumSize(QSize(800, 600)) # Минимальный размер окна
-
+        #self.setMinimumSize(QSize(800, 600)) # Минимальный размер окна
+        self.setFixedSize(800, 600)
         # Определение списка для хранения кувшинок
         self.DataBase = list()
         self.MaximumSize = 20 # Максимальное кол-во кувшинок
@@ -31,7 +31,7 @@ class EngineFrog(QWidget):
             self.DataBase.pop(0) # Удаление самой старой кувшинки в списке
 
         NewCircle = {
-            'x': random.randint(0, self.width()),
+            'x': random.randint(50, self.width() - 50),
             'y': 0,
             'size': 20, 
             'color': QColor(138, 154, 91),
@@ -64,6 +64,7 @@ class EngineFrog(QWidget):
         render = QPainter(self)
         render.setRenderHint(QPainter.RenderHint.Antialiasing) # Сглаживание при рендере
 
+
         render.fillRect(self.rect(), QColor(240, 240, 240))
         
         for circle in self.DataBase:
@@ -71,6 +72,10 @@ class EngineFrog(QWidget):
 
         render.setPen(QPen(QColor(0, 0, 0)))
         render.drawText(10, 20, f'Кувшинок: {len(self.DataBase)}')
+
+        render.setBrush(QBrush(QColor(194, 154, 74)))
+        render.drawRect(0, 0, 50, self.height())
+        render.drawRect(self.width() - 50, 0, 50, self.height())
 
     def renderCircle(self, render, circle):
         """Рендер кувшинки"""
@@ -92,7 +97,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("MainWindowApp")
-        self.setGeometry(100, 100, 1000, 800)
+        self.setFixedSize(800, 600)
+        #self.setGeometry(100, 100, 1000, 800)
         
         self.graph = EngineFrog()
         self.setCentralWidget(self.graph)
