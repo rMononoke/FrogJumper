@@ -11,16 +11,13 @@ class EngineFrog(QWidget):
         self.setWindowTitle("FrogApp")
         #self.setMinimumSize(QSize(800, 600)) # Минимальный размер окна
         self.setFixedSize(800, 600)
-        # Определение списка для хранения кувшинок
         self.DataBase = list()
-        self.MaximumSize = 20 # Увеличено для больше кувшинок
+        self.MaximumSize = 20
 
-        # Таймер добавления кувшинок
         self.SpawnTimer = QTimer()
         self.SpawnTimer.timeout.connect(self.GenerateCircle)
-        self.SpawnTimer.start(100) # Ускорено   
+        self.SpawnTimer.start(100)   
 
-        # Таймер рендера кувшинок
         self.RenderTimer = QTimer()
         self.RenderTimer.timeout.connect(self.RenderCircle)
         self.RenderTimer.start(50)
@@ -31,19 +28,18 @@ class EngineFrog(QWidget):
             'size': 15,
             'color': QColor(255, 0, 0),
             'direction': 1,  # 1 - вправо, -1 - влево
-            'target': None,  # Цель для прыжка
+            'target': None,  
         }
 
-        self.trail = None  # {'start_x': float, 'start_y': float, 'end_x': float, 'end_y': float}
+        self.trail = None
 
         self.JumpTimer = QTimer()
         self.JumpTimer.timeout.connect(self.frog_jump)
-        self.JumpTimer.start(150)  # Ускорены прыжки
+        self.JumpTimer.start(150) 
 
     def GenerateCircle(self):
-        """Случайная генерация кувшинок"""
-        if len(self.DataBase) >= self.MaximumSize: # Проверка на размер списка
-            self.DataBase.pop(0) # Удаление самой старой кувшинки в списке
+        if len(self.DataBase) >= self.MaximumSize:
+            self.DataBase.pop(0)
 
         NewCircle = {
             'x': random.randint(50, self.width() - 50),
@@ -57,7 +53,6 @@ class EngineFrog(QWidget):
         self.DataBase.append(NewCircle)
 
     def RenderCircle(self):
-        """Рендер/анимация кувшинок"""
         StashData = list()
         
         for i, circle in enumerate(self.DataBase):
@@ -93,7 +88,6 @@ class EngineFrog(QWidget):
     def frog_jump(self):
         target = self.find_next_target()
         
-        # Сохраняем след перед прыжком
         self.trail = {
             'start_x': self.frog['x'],
             'start_y': self.frog['y'],
@@ -107,14 +101,13 @@ class EngineFrog(QWidget):
         if 'is_bank' in target:
             self.frog['direction'] *= -1
         else:
-            # Удаляем кувшинку, на которую прыгнули
             self.DataBase = [c for c in self.DataBase if c != target]
 
-        self.update()  # Перерисовка после прыжка
+        self.update() 
 
     def paintEvent(self, event):
         render = QPainter(self)
-        render.setRenderHint(QPainter.RenderHint.Antialiasing) # Сглаживание при рендере
+        render.setRenderHint(QPainter.RenderHint.Antialiasing) # Сглаживание
 
         render.fillRect(self.rect(), QColor(240, 240, 240))
         
@@ -141,7 +134,6 @@ class EngineFrog(QWidget):
         render.drawText(10, 20, f'Кувшинок: {len(self.DataBase)}')
 
     def renderCircle(self, render, circle):
-        """Рендер кувшинки"""
         value = QPen(QColor(0, 0, 0), 1)
         render.setPen(value)
 

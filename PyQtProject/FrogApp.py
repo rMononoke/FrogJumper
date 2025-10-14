@@ -32,7 +32,6 @@ class EngineFrog(QWidget):
             'direction': 1,  # 1 - вправо, -1 - влево
             'target': None,  # следующая кувшинка
         }
-
         self.trail = None
 
         # Таймер между прыжками лягушки
@@ -52,12 +51,11 @@ class EngineFrog(QWidget):
             'dy': 10,
             'life': 100
         }
-
         self.DataBase.append(NewCircle)
 
     def RenderCircle(self):
         StashData = list() # Список для удаления кувшинок
-        
+
         for i, circle in enumerate(self.DataBase):
 
             circle['y'] += circle['dy']
@@ -70,7 +68,6 @@ class EngineFrog(QWidget):
         for i in sorted(StashData, reverse=True):
             if i < len(self.DataBase):
                 self.DataBase.pop(i)
-        
         self.update()  # Перерисовка
 
     def find_next_target(self):
@@ -104,15 +101,13 @@ class EngineFrog(QWidget):
         if 'is_bank' in target:
             self.frog['direction'] *= -1
         else:
-            # Удаляем кувшинку, на которую прыгнули
-            self.DataBase = [c for c in self.DataBase if c != target]
+            self.DataBase = [c for c in self.DataBase if c != target] # Удаление кувшинки после приземления
 
         self.update()  # Перерисовка
 
     def paintEvent(self, event):
         render = QPainter(self)
-        render.setRenderHint(QPainter.RenderHint.Antialiasing) # Сглаживание\
-
+        render.setRenderHint(QPainter.RenderHint.Antialiasing) # Сглаживание
         render.fillRect(self.rect(), QColor(240, 240, 240))
         
         # Левый берег
@@ -124,7 +119,6 @@ class EngineFrog(QWidget):
         
         for circle in self.DataBase:
             self.renderCircle(render, circle)
-        
         self.renderCircle(render, self.frog)
 
         if self.trail:
